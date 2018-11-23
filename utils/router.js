@@ -3,6 +3,7 @@
 const Configuration = require('../data/configuration'); 
 const QueryManager = require('../utils/query_manager');
 const url = require('url');
+const sqlLiveData = require('../data/sql/liveData');
 
 class Router {
     constructor (request, response) {
@@ -30,7 +31,7 @@ class Router {
         const idPortinformer = params.fk_portinformer;
         const idCurrentActivity = params.fk_ship_current_activity;
 
-        let query = `select * from control_unit_data where fk_portinformer = ${idPortinformer} and fk_ship_current_activity = ${idCurrentActivity} and is_active = true`;
+        let query = sqlLiveData.moored(idPortinformer, idCurrentActivity); 
         QueryManager.sendSelect(query, response);
     }
 
