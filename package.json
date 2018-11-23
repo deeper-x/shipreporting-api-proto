@@ -1,0 +1,22 @@
+{
+  "name": "shipreporting-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/deeper-x/shipreporting-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/deeper-x/shipreporting-api/issues"
+  },
+  "homepage": "https://gitlab.com/deeper-x/shipreporting-api#readme",
+  "dependencies": {
+    "pg": "^7.6.1"
+  }
+}
