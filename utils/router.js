@@ -30,8 +30,9 @@ class Router {
     mooredNow (response, params) {
         const idPortinformer = params.fk_portinformer;
         const idCurrentActivity = params.fk_ship_current_activity;
+        const mooringStates = this._configuration.getMooringStates();
 
-        let query = sqlLiveData.moored(idPortinformer, idCurrentActivity); 
+        let query = sqlLiveData.moored(idPortinformer, idCurrentActivity, mooringStates); 
         QueryManager.sendSelect(query, response);
     }
 

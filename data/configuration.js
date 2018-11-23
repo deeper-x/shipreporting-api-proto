@@ -5,6 +5,10 @@ class Configuration {
         return 'http://127.0.0.1:3000';
     }
     
+    getMooringStates () {
+        return '(17, 18, 19, 20, 21, 22)';
+    }
+    
     getMapUrl (routerObject) {
         let mapUrl = {
             '/mooredNow': {
