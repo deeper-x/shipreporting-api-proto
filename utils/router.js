@@ -38,7 +38,19 @@ class Router {
         const mooringStates = configuration.mooringStates;
 
         let query = sqlLiveData.moored(idPortinformer, idCurrentActivity, mooringStates); 
-        QueryManager.sendSelect(query, response);
+        QueryManager.runSelect(query, response);
+    }
+
+    roadsteadNow (response, params) {
+        let configuration = new Configuration();
+
+        const idPortinformer = params.fk_portinformer;
+        const idCurrentActivity = params.fk_ship_current_activity;
+        const roadsteadStates = configuration.roadsteadStates;
+
+        let query = sqlLiveData.roadstead(idPortinformer, idCurrentActivity, roadsteadStates);
+        
+        QueryManager.runSelect(query, response);
     }
 
     favicon (response) {
