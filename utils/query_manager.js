@@ -6,7 +6,7 @@ const {Pool, Client} = require('pg');
 const pool = new Pool(databaseConfig);
 
 class QueryManager {
-    static sendSelect (query, response) {
+    static runSelect (query, response) {
         (() => {
             pool.connect()
                 .then(
