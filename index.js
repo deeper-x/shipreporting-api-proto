@@ -1,13 +1,18 @@
 let http = require('http');
 let Router = require('./utils/router');
 let url = require('url');
+let Configuration = require('./data/configuration');
+
+let configuration = new Configuration();
 
 const server = http.createServer((req, res) => {
     let router = new Router(req, res);
-    let toBeCall = router.getCallback(req);
-    let callback = router.dispatch(toBeCall);
+    let pathToCall = router.getCallback(req);
+    
+    let callback = router.dispatch(pathToCall);
+    
     let queryString = url.parse(req.url, true);
-    let calledURL = new URL('http://127.0.0.1:3000' + queryString.path);
+    let calledURL = new URL(`${configuration.path}${queryString.path}`);
 
     let searchParams = calledURL.searchParams;
     
@@ -20,9 +25,6 @@ const server = http.createServer((req, res) => {
 });
 
 
-let port = 3000;
-let hostname = 'localhost';
-
-server.listen(port, hostname, () => {
-    console.log(`running on ${hostname}:${port}...`);
+server.listen(configuration.port, configuration.host, () => {
+    console.log(`running on ${configuration.path}...`);
 });

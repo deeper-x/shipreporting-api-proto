@@ -1,16 +1,30 @@
 'use strict';
 
 class Configuration {
-    static get path () {
-        return 'http://127.0.0.1:3000';
+    constructor () {
+        this._host = '127.0.0.1';
+        this._port = 3001;
+        this._mooringStates = '(17, 18, 19, 20, 21, 22)';
     }
     
-    static getMooringStates () {
-        return '(17, 18, 19, 20, 21, 22)';
+    get path () {
+        return `http://${this._host}:${this._port}`;
     }
     
-    static getMapUrl (routerObject) {
-        let mapUrl = {
+    get host () {
+        return this._host;
+    }
+
+    get port () {
+        return this._port;
+    }
+
+    get mooringStates () {
+        return this._mooringStates;
+    }
+    
+    getMappedUrl (routerObject) {
+        return {
             '/mooredNow': {
                 'methodToCall': routerObject.mooredNow,
                 'params': [
@@ -21,7 +35,6 @@ class Configuration {
                 'methodToCall': routerObject.favicon
             }
         };
-        return mapUrl;
     }
 }
 

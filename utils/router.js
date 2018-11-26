@@ -8,27 +8,34 @@ const sqlLiveData = require('../data/sql/liveData');
 class Router {
     constructor (request, response) {
         this._request = request;
-        this._mapUrl = Configuration.getMapUrl(this);
         this._queryString = url.parse(request.url, true);
-        this._calledURL = new URL(Configuration.path + this._queryString.path);
     }
 
     getCallback () {
+        let configuration = new Configuration();
+
+        this._calledURL = new URL(`${configuration.path}${this._queryString.path}`);
         return this._calledURL.pathname;
     }
 
     dispatch (inputPathName) {
-        if ( this._mapUrl.hasOwnProperty(inputPathName) ) {
-            return this._mapUrl[inputPathName];
+        let configuration = new Configuration();
+        this._calledURL = new URL(`${configuration.path}${this._queryString.path}`);
+        this._mappedUrl = configuration.getMappedUrl(this);
+
+        if ( this._mappedUrl.hasOwnProperty(inputPathName) ) {
+            return this._mappedUrl[inputPathName];
         } else {
             return this.routeNotFound;
         }
     }
         
     mooredNow (response, params) {
+        let configuration = new Configuration();
+        
         const idPortinformer = params.fk_portinformer;
         const idCurrentActivity = params.fk_ship_current_activity;
-        const mooringStates = Configuration.getMooringStates();
+        const mooringStates = configuration.mooringStates;
 
         let query = sqlLiveData.moored(idPortinformer, idCurrentActivity, mooringStates); 
         QueryManager.sendSelect(query, response);
