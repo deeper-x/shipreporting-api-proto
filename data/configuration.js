@@ -5,7 +5,8 @@ class Configuration {
         this._host = '127.0.0.1';
         this._port = 3001;
         this._mooringStates = '(17, 18, 19, 20, 21, 22)';
-        this._roadsteadStates = '(16, 19, 23)';
+        this._roadsteadStates = '(16, 19, 25)';
+        this._notOperationalStates = '()';
     }
     
     get path () {

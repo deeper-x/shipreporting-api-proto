@@ -1,9 +1,9 @@
-let moored = function (idPortinformer, idCurrentActivity, mooringStates) {
+let moored = function (idPortinformer, idCurrentActivity, notOperationalStates) {
     return `SELECT RES.fk_control_unit_data, ship_description, ts_main_event_field_val, quays.description, berths.description
     FROM (
         SELECT fk_control_unit_data, MAX(ts_main_event_field_val) AS max_time, fk_portinformer
         FROM trips_logs
-        WHERE fk_state IN ${mooringStates}
+        WHERE fk_state IN ${notOperationalStates}
         GROUP BY fk_control_unit_data, fk_portinformer
         ) 
     AS RES
@@ -28,12 +28,13 @@ let moored = function (idPortinformer, idCurrentActivity, mooringStates) {
 };  
 
 
-let roadstead = function (idPortinformer, idCurrentActivity, roadsteadStates) {
-    return `SELECT RES.fk_control_unit_data, ship_description, ts_main_event_field_val, anchorage_points.description
+let roadstead = function (idPortinformer, idCurrentActivity, notOperationalStates) {
+    return `SELECT RES.fk_control_unit_data, ship_description, 
+    ts_main_event_field_val, anchorage_points.description
     FROM (
         SELECT fk_control_unit_data, MAX(ts_main_event_field_val) AS max_time, fk_portinformer
         FROM trips_logs
-        WHERE fk_state IN ${roadsteadStates}
+        WHERE fk_state NOT IN ${notOperationalStates}
         GROUP BY fk_control_unit_data, fk_portinformer
         ) 
     AS RES
@@ -51,7 +52,8 @@ let roadstead = function (idPortinformer, idCurrentActivity, roadsteadStates) {
     WHERE control_unit_data.fk_portinformer = ${idPortinformer}
     AND fk_ship_current_activity = ${idCurrentActivity}
     AND is_active = true
-    GROUP BY RES.fk_control_unit_data, ts_main_event_field_val, ship_description, anchorage_points.description
+    GROUP BY RES.fk_control_unit_data, ts_main_event_field_val, 
+    ship_description, anchorage_points.description
     ORDER BY RES.fk_control_unit_data`;
 };
 
