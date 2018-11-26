@@ -1,15 +1,15 @@
 'use strict';
 
 class Configuration {
-    get path () {
+    static get path () {
         return 'http://127.0.0.1:3000';
     }
     
-    getMooringStates () {
+    static getMooringStates () {
         return '(17, 18, 19, 20, 21, 22)';
     }
     
-    getMapUrl (routerObject) {
+    static getMapUrl (routerObject) {
         let mapUrl = {
             '/mooredNow': {
                 'methodToCall': routerObject.mooredNow,
