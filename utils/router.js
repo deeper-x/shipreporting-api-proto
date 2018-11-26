@@ -35,9 +35,10 @@ class Router {
         
         const idPortinformer = params.fk_portinformer;
         const idCurrentActivity = params.fk_ship_current_activity;
-        const mooringStates = configuration.mooringStates;
+        const notOperationalStates = configuration.notOperationalStates;
 
-        let query = sqlLiveData.moored(idPortinformer, idCurrentActivity, mooringStates); 
+        let query = sqlLiveData.moored(idPortinformer, idCurrentActivity, notOperationalStates);
+         
         QueryManager.runSelect(query, response);
     }
 
@@ -46,10 +47,30 @@ class Router {
 
         const idPortinformer = params.fk_portinformer;
         const idCurrentActivity = params.fk_ship_current_activity;
-        const roadsteadStates = configuration.roadsteadStates;
+        const notOperationalStates = configuration.notOperationalStates;
 
-        let query = sqlLiveData.roadstead(idPortinformer, idCurrentActivity, roadsteadStates);
+        let query = sqlLiveData.roadstead(idPortinformer, idCurrentActivity, notOperationalStates);        
+        QueryManager.runSelect(query, response);
+    }
+
+    arrivalsNow (response, params) {
+        const idPortinformer = params.fk_portinformer;
+
+        let query = sqlLiveData.arrivals(idPortinformer);
+        QueryManager.runSelect(query, response);
+    }
+
+    departuresNow (response, params) {
+        const idPortinformer = params.fk_portinformer;
+
+        let query = sqlLiveData.arrivals(idPortinformer);
+        QueryManager.runSelect(query, response);
+    }
+
+    arrivalPrevisionsNow (response, params) {
+        const idPortinformer = params.fk_portinformer;
         
+        let query = sqlLiveData.arrivalPrevisions(idPortinformer);
         QueryManager.runSelect(query, response);
     }
 

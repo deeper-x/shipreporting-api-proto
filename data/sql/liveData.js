@@ -57,10 +57,53 @@ let roadstead = function (idPortinformer, idCurrentActivity, notOperationalState
     ORDER BY RES.fk_control_unit_data`;
 };
 
+let arrivals = function (idPortinformer) {
+    return `SELECT id_control_unit_data AS id_trip, 
+    ship_description AS ship_name,  
+    ts_avvistamento AS sighting_time
+    FROM data_avvistamento_nave
+    INNER JOIN control_unit_data
+    ON data_avvistamento_nave.fk_control_unit_data = id_control_unit_data
+    INNER JOIN ships
+    ON fk_ship = id_ship
+    WHERE control_unit_data.fk_portinformer = ${idPortinformer}
+    AND LENGTH(ts_avvistamento) > 0
+    AND ts_avvistamento::DATE = current_date`;
+};
+
+let departures = function (idPortinformer) {
+    return `SELECT id_control_unit_data AS id_trip, 
+    ship_description AS ship_name,  
+    ts_out_of_sight
+    FROM data_fuori_dal_porto
+    INNER JOIN control_unit_data
+    ON data_fuori_dal_porto.fk_control_unit_data = id_control_unit_data
+    INNER JOIN ships
+    ON fk_ship = id_ship
+    WHERE control_unit_data.fk_portinformer = ${idPortinformer}
+    AND LENGTH(ts_out_of_sight) > 4
+    AND ts_out_of_sight::DATE = current_date`;
+};
+
+let arrivalPrevisions = function (idPortinformer) {
+    return `SELECT id_planned_arrival, 
+    ship_description AS ship_name,  
+    ts_arrival_prevision
+    FROM planned_arrivals
+    INNER JOIN ships
+    ON fk_ship = id_ship
+    WHERE planned_arrivals.fk_portinformer = ${idPortinformer}
+    AND LENGTH(ts_arrival_prevision) > 4
+    AND ts_arrival_prevision::DATE = current_date`;
+};
+
 
 let liveData = {
     moored: moored,
-    roadstead: roadstead
+    roadstead: roadstead,
+    arrivals: arrivals,
+    departures: departures,
+    arrivalPrevisions: arrivalPrevisions
 };
 
 module.exports = liveData;

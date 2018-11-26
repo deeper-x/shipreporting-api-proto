@@ -6,7 +6,7 @@ class Configuration {
         this._port = 3001;
         this._mooringStates = '(17, 18, 19, 20, 21, 22)';
         this._roadsteadStates = '(16, 19, 25)';
-        this._notOperationalStates = '()';
+        this._notOperationalStates = '(10, 11, 12)';
     }
     
     get path () {
@@ -29,6 +29,10 @@ class Configuration {
         return this._roadsteadStates;
     }
     
+    get notOperationalStates () {
+        return this._notOperationalStates;
+    }
+
     getMappedUrl (routerObject) {
         return {
             '/mooredNow': {
@@ -39,6 +43,24 @@ class Configuration {
             },
             '/roadsteadNow': {
                 'methodToCall': routerObject.roadsteadNow,
+                'params': [
+                    'fk_portinformer', 'fk_ship_current_activity'
+                ],
+            },
+            '/arrivalsNow': {
+                'methodToCall': routerObject.arrivalsNow,
+                'params': [
+                    'fk_portinformer', 'fk_ship_current_activity'
+                ],
+            },
+            '/departuresNow': {
+                'methodToCall': routerObject.departuresNow,
+                'params': [
+                    'fk_portinformer', 'fk_ship_current_activity'
+                ],
+            },
+            '/arrivalPrevisionsNow': {
+                'methodToCall': routerObject.arrivalPrevisionsNow,
                 'params': [
                     'fk_portinformer', 'fk_ship_current_activity'
                 ],
