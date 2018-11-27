@@ -1,3 +1,5 @@
+'use strict';
+
 let moored = function (idPortinformer, idCurrentActivity, notOperationalStates) {
     return `SELECT RES.fk_control_unit_data, ship_description, ts_main_event_field_val, quays.description, berths.description
     FROM (
@@ -26,7 +28,6 @@ let moored = function (idPortinformer, idCurrentActivity, notOperationalStates) 
     GROUP BY RES.fk_control_unit_data, ts_main_event_field_val, ship_description, quays.description, berths.description
     ORDER BY RES.fk_control_unit_data`;
 };  
-
 
 let roadstead = function (idPortinformer, idCurrentActivity, notOperationalStates) {
     return `SELECT RES.fk_control_unit_data, ship_description, 
