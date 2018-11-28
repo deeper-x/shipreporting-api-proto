@@ -135,15 +135,36 @@ let departures = function (idPortinformer) {
 };
 
 let arrivalPrevisions = function (idPortinformer) {
+    //TOADD: type, flag, gt, quay/roadstead, shipment, LPC, agency
     return `SELECT id_planned_arrival, 
-    ship_description AS ship_name,  
-    ts_arrival_prevision
-    FROM planned_arrivals
-    INNER JOIN ships
-    ON fk_ship = id_ship
-    WHERE planned_arrivals.fk_portinformer = ${idPortinformer}
-    AND LENGTH(ts_arrival_prevision) > 4
-    AND ts_arrival_prevision::DATE = current_date`;
+        ship_description AS ship_name,
+        type_acronym as ship_type, iso3, gross_tonnage, ships.length, ships.width,
+        ports.name as port, agencies.description as agency,  
+        ts_arrival_prevision, planned_goods_data.shipped_goods_row
+        FROM planned_arrivals
+        INNER JOIN (
+            SELECT fk_planned_arrival, string_agg(goods_mvmnt_type||'->'||goods_categories.description::TEXT||'-'||groups_categories.description, ', ') AS shipped_goods_row
+            FROM planned_goods
+            INNER JOIN goods_categories
+            ON goods_categories.id_goods_category = planned_goods.fk_goods_category
+            INNER JOIN groups_categories
+            ON groups_categories.id_group = goods_categories.fk_group_category
+            GROUP BY fk_planned_arrival
+        ) as planned_goods_data
+        ON planned_goods_data.fk_planned_arrival = id_planned_arrival
+        INNER JOIN ports
+        ON fk_last_port_of_call = ports.id_port 
+        INNER JOIN ships
+        ON planned_arrivals.fk_ship = id_ship
+        INNER JOIN agencies
+        ON planned_arrivals.fk_agency = agencies.id_agency
+        INNER JOIN ship_types
+        ON ships.fk_ship_type = ship_types.id_ship_type
+        INNER JOIN countries
+        ON countries.id_country = ships.fk_country_flag
+        WHERE planned_arrivals.fk_portinformer = ${idPortinformer}
+        AND LENGTH(ts_arrival_prevision) > 4
+        AND ts_arrival_prevision::DATE = current_date`;
 };
 
 
