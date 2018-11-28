@@ -140,7 +140,9 @@ let arrivalPrevisions = function (idPortinformer) {
         ship_description AS ship_name,
         type_acronym as ship_type, iso3, gross_tonnage, ships.length, ships.width,
         ports.name as port, agencies.description as agency,  
-        ts_arrival_prevision, planned_goods_data.shipped_goods_row
+        ts_arrival_prevision, planned_goods_data.shipped_goods_row,
+        quays.description as quay, berths.description as berth, 
+        anchorage_points.description as anchorage_point
         FROM planned_arrivals
         INNER JOIN (
             SELECT fk_planned_arrival, string_agg(goods_mvmnt_type||'->'||goods_categories.description::TEXT||'-'||groups_categories.description, ', ') AS shipped_goods_row
@@ -152,6 +154,12 @@ let arrivalPrevisions = function (idPortinformer) {
             GROUP BY fk_planned_arrival
         ) as planned_goods_data
         ON planned_goods_data.fk_planned_arrival = id_planned_arrival
+        INNER JOIN quays
+        ON planned_arrivals.fk_stop_quay = quays.id_quay
+        INNER JOIN berths
+        ON planned_arrivals.fk_stop_berth = berths.id_berth
+        INNER JOIN anchorage_points
+        ON planned_arrivals.fk_stop_anchorage_point = anchorage_points.id_anchorage_point
         INNER JOIN ports
         ON fk_last_port_of_call = ports.id_port 
         INNER JOIN ships
