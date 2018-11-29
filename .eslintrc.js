@@ -9,6 +9,9 @@ module.exports = {
     'parserOptions': {
         'ecmaVersion': 6
     },
+    'ecmaFeatures': {
+        'impliedStrict': true
+    },
     'rules': {
         'indent': [2, 4],
         'space-before-function-paren': [1, {
