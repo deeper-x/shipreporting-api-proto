@@ -1,7 +1,5 @@
-'use strict';
-
 const Configuration = require('../data/configuration'); 
-const QueryManager = require('../utils/query_manager');
+const QueryManager = require('./query_manager');
 const url = require('url');
 const sqlLiveData = require('../data/sql/liveData');
 

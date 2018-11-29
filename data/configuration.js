@@ -1,5 +1,3 @@
-'use strict';
-
 class Configuration {
     constructor () {
         this._host = '127.0.0.1';

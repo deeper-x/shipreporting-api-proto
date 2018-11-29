@@ -1,5 +1,3 @@
-'use strict';
-
 const databaseConfig = require('../lib/database');
 const {Pool, Client} = require('pg');
 
