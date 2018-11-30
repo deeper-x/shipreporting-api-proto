@@ -142,7 +142,7 @@ let arrivalPrevisions = function (idPortinformer) {
         ON countries.id_country = ships.fk_country_flag
         WHERE planned_arrivals.fk_portinformer = ${idPortinformer}
         AND LENGTH(ts_arrival_prevision) > 4
-        AND ts_arrival_prevision::DATE = current_date`;
+        AND is_active = true`;
 };
 
 let arrivals = function (idPortinformer) {
@@ -165,16 +165,23 @@ let arrivals = function (idPortinformer) {
 
 let departures = function (idPortinformer) {
     return `SELECT id_control_unit_data AS id_trip, 
-    ship_description AS ship_name,  
-    ts_out_of_sight
-    FROM data_fuori_dal_porto
-    INNER JOIN control_unit_data
-    ON data_fuori_dal_porto.fk_control_unit_data = id_control_unit_data
-    INNER JOIN ships
-    ON fk_ship = id_ship
-    WHERE control_unit_data.fk_portinformer = ${idPortinformer}
-    AND LENGTH(ts_out_of_sight) > 4
-    AND ts_out_of_sight::DATE = current_date`;
+        ship_description AS ship_name, type_acronym,  
+        ts_out_of_sight, ports.name as destination_port, countries.iso3 as ship_country,
+        "ETA"
+        FROM control_unit_data
+        INNER JOIN data_fuori_dal_porto
+        ON data_fuori_dal_porto.fk_control_unit_data = id_control_unit_data
+        INNER JOIN ports
+        ON data_fuori_dal_porto.fk_destination = ports.id_port
+        INNER JOIN ships
+        ON control_unit_data.fk_ship = ships.id_ship
+        INNER JOIN ship_types
+        ON ships.fk_ship_type = ship_types.id_ship_type
+        INNER JOIN countries
+        ON countries.id_country = ships.fk_country_flag
+        WHERE control_unit_data.fk_portinformer = ${idPortinformer}
+        AND LENGTH(ts_out_of_sight) > 4
+        AND ts_out_of_sight::DATE = current_date`;
 };
 
 

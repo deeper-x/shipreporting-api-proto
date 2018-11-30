@@ -61,7 +61,7 @@ class Router {
     departuresNow (response, params) {
         const idPortinformer = params.fk_portinformer;
 
-        let query = sqlLiveData.arrivals(idPortinformer);
+        let query = sqlLiveData.departures(idPortinformer);
         QueryManager.runSelect(query, response);
     }
 
