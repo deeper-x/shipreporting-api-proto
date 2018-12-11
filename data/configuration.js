@@ -63,6 +63,12 @@ class Configuration {
                     'fk_portinformer', 'fk_ship_current_activity'
                 ],
             },
+            '/activeTripsNow': {
+                'methodToCall': routerObject.activeTripsNow,
+                'params': [
+                    'fk_portinformer'
+                ],
+            },
             '/favicon.ico': {
                 'methodToCall': routerObject.favicon
             }

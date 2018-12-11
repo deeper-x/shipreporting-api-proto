@@ -72,6 +72,16 @@ class Router {
         QueryManager.runSelect(query, response);
     }
 
+    activeTripsNow (response, params) {
+        let configuration = new Configuration();
+
+        const idPortinformer = params.fk_portinformer;
+        const notOperationalStates = configuration.notOperationalStates;
+
+        let query = sqlLiveData.activeTrips(idPortinformer, notOperationalStates);
+        QueryManager.runSelect(query, response);
+    }
+
     favicon (response) {
         response.statusCode = 200;
         response.end();

@@ -184,13 +184,32 @@ let departures = function (idPortinformer) {
         AND ts_out_of_sight::DATE = current_date`;
 };
 
+let activeTrips = function (idPortinformer, notOperationalStates) {
+    return `SELECT ship_description, ship_current_activities.description, last_trip_ts 
+        FROM control_unit_data INNER JOIN ships
+        ON fk_ship = id_ship
+        INNER JOIN ship_current_activities
+        ON fk_ship_current_activity = id_activity
+        INNER JOIN (
+            SELECT fk_control_unit_data, MAX(ts_main_event_field_val) AS last_trip_ts
+            FROM trips_logs INNER JOIN control_unit_data
+            ON id_control_unit_data = fk_control_unit_data
+            WHERE control_unit_data.fk_portinformer = ${idPortinformer}
+            AND fk_state NOT IN ${notOperationalStates}
+            GROUP BY fk_control_unit_data
+        ) as last_trip_log
+        ON last_trip_log.fk_control_unit_data = id_control_unit_data
+        WHERE is_active  = true
+        and fk_portinformer = ${idPortinformer}`;
+};
 
 let liveData = {
     moored: moored,
     roadstead: roadstead,
     arrivals: arrivals,
     departures: departures,
-    arrivalPrevisions: arrivalPrevisions
+    arrivalPrevisions: arrivalPrevisions,
+    activeTrips: activeTrips
 };
 
 module.exports = liveData;
