@@ -24,3 +24,5 @@ __Arrival previsions__:
 ```
 http://127.0.0.1:3001/arrivalPrevisionsNow?id_portinformer=28
 ```
+
+NOTE: repository hooked to slack
