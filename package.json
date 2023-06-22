@@ -17,6 +17,6 @@
   },
   "homepage": "https://gitlab.com/deeper-x/shipreporting-api#readme",
   "dependencies": {
-    "pg": "^7.6.1"
+    "pg": "^8.11.0"
   }
 }
